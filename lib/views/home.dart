@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_aggregator/models/article_model.dart';
 import 'package:news_aggregator/helper/news.dart';
+import 'package:news_aggregator/views/article_view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -67,7 +68,7 @@ class _HomeState extends State<Home> {
               children: [
                 //categories
                 Container(
-                  height: 75,
+                  height: 80,
                   margin: const EdgeInsets.only(top: 10.0),
                   width: double.infinity,
                   child: ListView(
@@ -75,22 +76,22 @@ class _HomeState extends State<Home> {
                     children: [
                       Row(
                         children: [
-                          Card(
+                          CardTile(
                               categoryName: 'Business',
                               imageURL: 'images/business.jpg'),
-                          Card(
+                          CardTile(
                               categoryName: 'Entertainment',
                               imageURL: 'images/entertainment.jpeg'),
-                          Card(
+                          CardTile(
                               categoryName: 'Politics',
                               imageURL: 'images/politics.jpeg'),
-                          Card(
+                          CardTile(
                               categoryName: 'Sports',
                               imageURL: 'images/sports.jpeg'),
-                          Card(
+                          CardTile(
                               categoryName: 'Science',
                               imageURL: 'images/science.jpeg'),
-                          Card(
+                          CardTile(
                               categoryName: 'Travel',
                               imageURL: 'images/travel.jpeg'),
                         ],
@@ -104,8 +105,8 @@ class _HomeState extends State<Home> {
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: ListView.builder(
+                      padding: const EdgeInsets.only(top: 5.0),
                       itemCount: articleModel.length,
-                      scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
                         var p = articleModel[index];
                         return Blog(
@@ -122,9 +123,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-class Card extends StatelessWidget {
+class CardTile extends StatelessWidget {
   final String categoryName, imageURL;
-  Card({required this.categoryName, required this.imageURL});
+  CardTile({required this.categoryName, required this.imageURL});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -172,12 +173,53 @@ class Blog extends StatelessWidget {
       {required this.imageURL, required this.title, required this.description});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image.network(imageURL),
-        Text(title),
-        Text(description),
-      ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ArticleView()));
+      },
+      child: Card(
+        elevation: 10.0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10)),
+                child: Image.network(imageURL),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  title,
+                  textAlign: TextAlign.justify,
+                  style: GoogleFonts.openSans(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Text(
+                  description,
+                  textAlign: TextAlign.justify,
+                  style: GoogleFonts.lato(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
