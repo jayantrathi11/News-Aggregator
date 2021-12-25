@@ -1,6 +1,6 @@
 class ArticleModel {
   String title, description, imageURL, url;
-  DateTime publishedAt;
+  String publishedAt;
   ArticleModel(
       {required this.url,
       required this.description,

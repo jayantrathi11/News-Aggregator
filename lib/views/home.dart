@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
+import 'package:news_aggregator/models/article_model.dart';
+import 'package:news_aggregator/helper/news.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,6 +12,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<ArticleModel> articleModel = [];
+  News newsObject = News();
+  bool _isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    getReports();
+  }
+
+  Future<void> getReports() async {
+    await newsObject.getNews();
+    articleModel = newsObject.news;
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,40 +57,67 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            height: 75,
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+      body: _isLoading
+          ? const Center(
+              child: CupertinoActivityIndicator(
+                radius: 40,
+              ),
+            )
+          : Column(
               children: [
-                Row(
-                  children: [
-                    Card(
-                        categoryName: 'Business',
-                        imageURL: 'images/business.jpg'),
-                    Card(
-                        categoryName: 'Entertainment',
-                        imageURL: 'images/entertainment.jpeg'),
-                    Card(
-                        categoryName: 'Politics',
-                        imageURL: 'images/politics.jpeg'),
-                    Card(
-                        categoryName: 'Sports', imageURL: 'images/sports.jpeg'),
-                    Card(
-                        categoryName: 'Science',
-                        imageURL: 'images/science.jpeg'),
-                    Card(
-                        categoryName: 'Travel', imageURL: 'images/travel.jpeg'),
-                  ],
+                //categories
+                Container(
+                  height: 75,
+                  margin: const EdgeInsets.only(top: 10.0),
+                  width: double.infinity,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Row(
+                        children: [
+                          Card(
+                              categoryName: 'Business',
+                              imageURL: 'images/business.jpg'),
+                          Card(
+                              categoryName: 'Entertainment',
+                              imageURL: 'images/entertainment.jpeg'),
+                          Card(
+                              categoryName: 'Politics',
+                              imageURL: 'images/politics.jpeg'),
+                          Card(
+                              categoryName: 'Sports',
+                              imageURL: 'images/sports.jpeg'),
+                          Card(
+                              categoryName: 'Science',
+                              imageURL: 'images/science.jpeg'),
+                          Card(
+                              categoryName: 'Travel',
+                              imageURL: 'images/travel.jpeg'),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
+
+                //blogs
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: ListView.builder(
+                      itemCount: articleModel.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        var p = articleModel[index];
+                        return Blog(
+                            imageURL: p.imageURL,
+                            title: p.title,
+                            description: p.description);
+                      },
+                    ),
+                  ),
+                )
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -126,14 +172,12 @@ class Blog extends StatelessWidget {
       {required this.imageURL, required this.title, required this.description});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Image.network(imageURL),
-          Text(title),
-          Text(description),
-        ],
-      ),
+    return Column(
+      children: [
+        Image.network(imageURL),
+        Text(title),
+        Text(description),
+      ],
     );
   }
 }
