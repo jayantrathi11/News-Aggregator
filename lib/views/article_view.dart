@@ -14,7 +14,6 @@ class ArticleView extends StatefulWidget {
 class _ArticleViewState extends State<ArticleView> {
   late final Completer<WebViewController> _controller =
       Completer<WebViewController>();
-  bool _isLoading = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
