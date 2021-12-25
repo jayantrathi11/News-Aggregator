@@ -1,6 +1,7 @@
 # News_Aggregator
 
 App for Getting News in Real Time
+![Simulator_Screen_Recording_-_iPhone_13_Pro_Max_-_2021-12-26_at_00_19_03_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/60975809/147391843-126d81c4-af4e-4271-8643-b6ed421a5982.gif)
 
 ## Getting Started
 
