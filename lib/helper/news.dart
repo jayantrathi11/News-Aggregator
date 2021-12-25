@@ -17,7 +17,7 @@ class News {
         (element) {
           if (element['urlToImage'] != null && element['description'] != null) {
             ArticleModel articleModel = ArticleModel(
-                url: element['url'],
+                pageUrl: element['url'],
                 description: element['description'],
                 title: element['title'],
                 imageURL: element['urlToImage'],

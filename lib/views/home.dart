@@ -110,9 +110,11 @@ class _HomeState extends State<Home> {
                       itemBuilder: (context, index) {
                         var p = articleModel[index];
                         return Blog(
-                            imageURL: p.imageURL,
-                            title: p.title,
-                            description: p.description);
+                          imageURL: p.imageURL,
+                          title: p.title,
+                          description: p.description,
+                          pageUrl: p.pageUrl,
+                        );
                       },
                     ),
                   ),
@@ -168,15 +170,24 @@ class CardTile extends StatelessWidget {
 }
 
 class Blog extends StatelessWidget {
-  final String imageURL, title, description;
+  final String imageURL, title, description, pageUrl;
   Blog(
-      {required this.imageURL, required this.title, required this.description});
+      {required this.imageURL,
+      required this.title,
+      required this.description,
+      required this.pageUrl});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ArticleView()));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArticleView(
+              pageUrl: pageUrl,
+            ),
+          ),
+        );
       },
       child: Card(
         elevation: 10.0,
