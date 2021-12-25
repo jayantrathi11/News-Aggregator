@@ -1,4 +1,4 @@
-# news_aggregator
+# News_Aggregator
 
 App for Getting News in Real Time
 
